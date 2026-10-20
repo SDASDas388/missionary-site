@@ -1,8 +1,12 @@
 import streamlit as st
-import os
+from pathlib import Path
 from openai import OpenAI
 from datetime import datetime
 import json
+
+APP_DIR = Path(__file__).resolve().parent
+RESOURCE_DIR = APP_DIR / "resource"
+SESSIONS_DIR = APP_DIR / "sessions"
 
 print("----------> 重新执行此文件 , 渲染展示页面")
 
@@ -29,7 +33,7 @@ st.title("missionary助手")
 
 
 # log
-st.logo("resource/logo.png")
+st.logo(str(RESOURCE_DIR / "logo.png"))
 #endregion
 
 
@@ -53,19 +57,18 @@ def save_session():
         }
 
         # 如果 sessions 目录不存在, 则创建
-        if not os.path.exists("sessions"):
-            os.mkdir("sessions")
+        SESSIONS_DIR.mkdir(exist_ok=True)
 
         # 保存会话数据
-        with open(f"sessions/{st.session_state.current_session}.json", "w", encoding="utf-8") as f:
+        with open(SESSIONS_DIR / f"{st.session_state.current_session}.json", "w", encoding="utf-8") as f:
             json.dump(session_data, f, ensure_ascii=False, indent=2)
 
 # 加载所有的会话列表信息
 def load_sessions():
     session_list = []
     # 加载sessions目录下的文件
-    if os.path.exists("sessions"):
-        file_list = os.listdir("sessions")
+    if SESSIONS_DIR.exists():
+        file_list = [path.name for path in SESSIONS_DIR.iterdir()]
         for filename in file_list:
             if filename.endswith(".json"):
                 session_list.append(filename[:-5])
@@ -75,9 +78,10 @@ def load_sessions():
 # 加载指定的会话信息
 def load_session(session_name):
     try:
-        if os.path.exists(f"sessions/{session_name}.json"):
+        session_file = SESSIONS_DIR / f"{session_name}.json"
+        if session_file.exists():
             # 读取会话数据
-            with open(f"sessions/{session_name}.json", "r", encoding="utf-8") as f:
+            with open(session_file, "r", encoding="utf-8") as f:
                 session_data = json.load(f)
                 st.session_state.messages = session_data["messages"]
                 st.session_state.nick_name = session_data["nick_name"]
@@ -89,8 +93,9 @@ def load_session(session_name):
 # 删除会话信息函数
 def delete_session(session_name):
     try:
-        if os.path.exists(f"sessions/{session_name}.json"):
-            os.remove(f"sessions/{session_name}.json") # 删除文件
+        session_file = SESSIONS_DIR / f"{session_name}.json"
+        if session_file.exists():
+            session_file.unlink() # 删除文件
             # 如果删除的是当前会话, 则需要更新消息列表
             if session_name == st.session_state.current_session:
                 st.session_state.messages = []
