@@ -2,17 +2,24 @@ from pathlib import Path
 
 import streamlit as st
 
+from views.chapters import select_chapter
+
 RESOURCE_DIR = Path(__file__).resolve().parent.parent / "resource"
 PROJECT_ICON = RESOURCE_DIR / "logo.ico"
 PROJECT_SETUP = RESOURCE_DIR / "mysetup.exe"
+
+CHAPTERS = [
+    "自我介绍",
+    "正在学习的方向",
+    "个人项目",
+]
 
 
 def _read_setup() -> bytes:
     return PROJECT_SETUP.read_bytes()
 
 
-def render():
-    st.title("个人介绍")
+def _about() -> None:
     st.write(
         "我性格踏实稳重、积极好学，具备较强的自主学习能力和问题排查能力。"
         "平时做事认真细致，逻辑性强，遇到问题能够独立思考、耐心排查并总结经验。"
@@ -24,7 +31,8 @@ def render():
         "未来我希望继续深耕技术，不断提升自己的专业能力，持续学习、稳步进步。"
     )
 
-    st.header("正在学习的方向")
+
+def _learning() -> None:
     st.write("这个网站把目前在学的几块内容放在一起，方便自己复习，也方便别人快速了解。")
     st.markdown(
         """
@@ -35,7 +43,8 @@ def render():
         """
     )
 
-    st.header("个人项目")
+
+def _project() -> None:
     # 下载按钮盖在图标上，点击图片即可下载安装包。安装包约 49MB，点下去才读取。
     st.html(
         """
@@ -73,3 +82,17 @@ def render():
             key="download_mysetup",
             on_click="ignore",
         )
+
+
+_BODY = {
+    "自我介绍": _about,
+    "正在学习的方向": _learning,
+    "个人项目": _project,
+}
+
+
+def render() -> None:
+    chapter = select_chapter("intro", CHAPTERS, page_title="个人介绍")
+    st.title("个人介绍")
+    st.header(chapter)
+    _BODY[chapter]()
