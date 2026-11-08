@@ -10,7 +10,7 @@ from views.python_kb import render as render_python
 from views.qt_kb import render as render_qt
 
 ROOT = Path(__file__).resolve().parent
-PAGE_NAMES = ["AI 助手", "个人介绍", "Python 知识", "C++ 知识", "Qt 知识", "EDA 知识"]
+PAGE_NAMES = ["AI 助手", "个人能力", "Python 知识", "C++ 知识", "Qt 知识", "EDA 知识"]
 
 st.set_page_config(
     page_title="missionary星球",
@@ -49,7 +49,7 @@ with st.container(horizontal=True, horizontal_alignment="center", gap="small"):
 current_page = st.session_state.current_page
 if current_page == "AI 助手":
     runpy.run_path(str(ROOT / "ai_partner.py"), run_name="ai_partner_page")
-elif current_page == "个人介绍":
+elif current_page == "个人能力":
     render_intro()
 elif current_page == "Python 知识":
     render_python()
