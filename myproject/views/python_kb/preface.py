@@ -1,18 +1,9 @@
+"""Python 知识：引言"""
+
 import streamlit as st
 
-from views.chapters import select_chapter
 
-# 侧边栏按这个顺序显示。要多加一章，在这里加一项，并写上对应内容。
-CHAPTERS = [
-    "引言",
-    "数据与函数",
-    "模块与导入",
-    "运行与环境",
-    "和本项目的关系",
-]
-
-# 引言
-def _Preface() -> None:
+def render() -> None:
     st.write(
         "在这个AI时代横行，你是否会认为手敲编码已经不再重要，哦！是的，的的确确它就像是缝纫机走向工业革命那样，如果你依旧不跟随时代的潮流去学习使用机器，那你注定将被淘汰。"
 
@@ -119,48 +110,3 @@ def _Preface() -> None:
     st.markdown(
         ''':red[missionary--2026.11.04]''',text_alignment="right"
     )
-
-def _data_and_functions() -> None:
-    st.write(
-        "常用类型有字符串、列表、字典和布尔值。函数用 def 定义，把一段重复逻辑收起来，"
-        "调用时传入参数、拿回返回值。字典很适合保存「名字到内容」这种结构，"
-        "本站的聊天记录就是用字典列表来存的。"
-    )
-
-
-def _modules() -> None:
-    st.write(
-        "一个 .py 文件就是一个模块。用 import 把别的模块引进来，避免所有代码堆在一个文件里。"
-        "标准库提供 json、os、datetime 这类工具；第三方库用 pip 安装，例如 streamlit 和 openai。"
-    )
-
-
-def _runtime() -> None:
-    st.write(
-        "脚本可以直接用 python 文件名.py 运行。网页应用则用 streamlit run 启动，"
-        "浏览器里每次操作都会让脚本从头再执行一遍。虚拟环境用来固定依赖版本，避免和系统里别的项目打架。"
-    )
-
-
-def _this_project() -> None:
-    st.write(
-        "首页的 AI 助手就是一个 Python 程序：Streamlit 负责页面和输入框，"
-        "openai 库负责把问题发给模型，json 模块负责把每一段会话写进 sessions 目录。"
-        "另外五个页面也是 Python 函数，由启动文件按按钮调用。"
-    )
-
-
-_BODY = {
-    "引言": _Preface,
-    "数据与函数": _data_and_functions,
-    "模块与导入": _modules,
-    "运行与环境": _runtime,
-    "和本项目的关系": _this_project,
-}
-
-
-def render() -> None:
-    chapter = select_chapter("python", CHAPTERS, page_title="Python 知识")
-    st.title("Python 知识")
-    st.header(chapter)
-    _BODY[chapter]()

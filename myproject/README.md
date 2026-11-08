@@ -38,11 +38,12 @@ app.py                         页面配置、顶部六个按钮、按 current_p
   │    └─ resource/logo.png
   └─ views/
        ├─ chapters.py          知识页共用的章节侧边栏
-       ├─ intro.py             个人介绍
-       ├─ python_kb.py
-       ├─ cpp_kb.py
-       ├─ qt_kb.py
-       └─ eda_kb.py
+       ├─ knowledge.py         四门知识页共用的标题和分发
+       ├─ intro.py             个人能力
+       ├─ python_kb/           每一章一个文件
+       ├─ cpp_kb/
+       ├─ qt_kb/
+       └─ eda_kb/
 ```
 
 ### 页面怎么切
@@ -55,26 +56,21 @@ app.py                         页面配置、顶部六个按钮、按 current_p
 
 ### 章节侧边栏
 
-个人介绍和四门知识页共用 `views/chapters.py` 的 `select_chapter`。它在左侧画出当前页的章节按钮，把选中的章节名记在 `chapter_memory_<页面键>` 里。这个键不属于按钮本身，所以切到别的顶部页面再回来，仍停在上次那一章。
+个人能力和四门知识页共用 `views/chapters.py` 的 `select_chapter`。它在左侧画出当前页的章节按钮，把选中的章节名记在 `chapter_memory_<页面键>` 里。这个键不属于按钮本身，所以切到别的顶部页面再回来，仍停在上次那一章。
 
-每一页的章节列表在自己的文件里，例如 `views/python_kb.py`：
+四门知识页各自是一个包。章节正文在单独的文件里，包的 `__init__.py` 只按侧边栏顺序登记它们。例如 `views/cpp_kb/__init__.py`：
 
 ```python
-CHAPTERS = ["是什么", "数据与函数"]
-
-_BODY = {
-    "是什么": _what,
-    "数据与函数": _data_and_functions,
-}
+_CHAPTERS = [
+    ("前言", render_preface),
+    ("类型与内存", render_memory),
+]
 
 def render() -> None:
-    chapter = select_chapter("python", CHAPTERS, page_title="Python 知识")
-    st.title("Python 知识")
-    st.header(chapter)
-    _BODY[chapter]()
+    render_page("cpp", "C++ 知识", _CHAPTERS)
 ```
 
-加一章时，在 `CHAPTERS` 里追加名字，写一个函数，再放进 `_BODY`。`CHAPTERS` 里的每一项都必须在 `_BODY` 里有同名条目。`select_chapter` 的第一个参数是页面自己的键，各页不要重复。
+加一章时，在对应包里新建一个文件，写出 `render()`，再在 `_CHAPTERS` 末尾加一项。`render_page` 的页面键各页不要重复。
 
 ### AI 助手
 
@@ -95,11 +91,12 @@ def render() -> None:
 | `app.py` | 站点入口 |
 | `ai_partner.py` | AI 助手页面 |
 | `views/chapters.py` | 章节侧边栏 |
-| `views/intro.py` | 个人介绍，含项目图标下载 |
-| `views/python_kb.py` | Python 知识 |
-| `views/cpp_kb.py` | C++ 知识 |
-| `views/qt_kb.py` | Qt 知识 |
-| `views/eda_kb.py` | EDA 知识 |
+| `views/knowledge.py` | 知识页共用的标题和章节分发 |
+| `views/intro.py` | 个人能力，含项目图标下载 |
+| `views/python_kb/` | Python 知识，每章一个文件 |
+| `views/cpp_kb/` | C++ 知识，每章一个文件 |
+| `views/qt_kb/` | Qt 知识，每章一个文件 |
+| `views/eda_kb/` | EDA 知识，每章一个文件 |
 | `resource/` | 图标、安装包等静态文件 |
 | `.streamlit/secrets.toml` | API 密钥，不入库 |
 | `sessions/` | 聊天记录，不入库 |
