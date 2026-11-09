@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .streamlit/secrets.toml
 sessions/*.json
+data/visitors.json
+data/visitors.json.tmp

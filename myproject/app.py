@@ -8,6 +8,7 @@ from views.eda_kb import render as render_eda
 from views.intro import render as render_intro
 from views.python_kb import render as render_python
 from views.qt_kb import render as render_qt
+from views.visits import show_counter
 
 ROOT = Path(__file__).resolve().parent
 PAGE_NAMES = ["AI 助手", "个人能力", "Python 知识", "C++ 知识", "Qt 知识", "EDA 知识"]
@@ -45,6 +46,8 @@ with st.container(horizontal=True, horizontal_alignment="center", gap="small"):
             on_click=select_page,
             args=(name,),
         )
+
+show_counter()
 
 current_page = st.session_state.current_page
 if current_page == "AI 助手":
