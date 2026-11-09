@@ -526,3 +526,7 @@ def render() -> None:
 | 循环结构 | 重复执行代码块 | while / do-while / for | 条件为真时反复执行循环体 |
         """
     )
+
+    st.markdown(
+        ''':red[missionary--2026.11.08]''',text_alignment="right"
+    )
