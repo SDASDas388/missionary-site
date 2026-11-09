@@ -47,6 +47,7 @@ with st.container(horizontal=True, horizontal_alignment="center", gap="small"):
             args=(name,),
         )
 
+# 次数和人数显示在导航下方。地址和地区只写在 data/visitors.json。
 show_counter()
 
 current_page = st.session_state.current_page

@@ -5,3 +5,4 @@ __pycache__/
 sessions/*.json
 data/visitors.json
 data/visitors.json.tmp
+data/*.xdb
