@@ -12,7 +12,7 @@ _CHAPTERS = [
     ("前言", render_preface),
     ("C++语言简单程序设计", render_simple_programming),
     ("函数", render_function),
-    ("类与标准库", render_classes),
+    ("类", render_classes),
     ("和本项目的关系", render_this_project),
 ]
 
